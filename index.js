@@ -23,6 +23,11 @@ const persons = [
       "number": "39-23-6423122"
     }
 ]
+app.delete('/api/persons/:id', (request, response) => {
+  const id = Number(request.params.id)
+  person = persons.filter(person => person.id !== id)
+  response.status(204).end()
+})
 
 app.get('/api/persons', (request, response) => {
     response.json(persons)
@@ -35,6 +40,7 @@ app.get('/info', (request, response) => {
         `
     )
 })
+
 
 app.get('/api/persons/:id', (request, response) => {
   const id = Number(request.params.id)
