@@ -27,7 +27,7 @@ let persons = [
 app.get('/info', (request, response) => {
     response.send(
         `<p>Phonebook has info for ${persons.length} people</p>
-        <p>${new Date().toLocaleString()}</p>
+        <p>${new Date().toISOString()}</p>
         `
     )
 })
@@ -46,7 +46,7 @@ app.get('/api/persons/:id', (request, response) => {
 
 app.delete('/api/persons/:id', (request, response) => {
   const id = Number(request.params.id)
-  person = persons.filter(person => person.id !== id)
+  persons = persons.filter(person => person.id !== id)
   response.status(204).end()
 })
 
@@ -55,13 +55,21 @@ app.use(express.json())
 app.post('/api/persons', (request, response) => {
   const body = request.body
   
-  if(!body.name) {
+  if(!body.name || !body.number) {
     return response.status(400).json({
       error: 'content missing'
     })
   }
+
+  const searchName = persons.find(person => person.name === body.name)
+  if (searchName) {
+    return response.status(400).json({
+      error: 'name must be unique'
+    })
+  }
+
   const person = {
-    id: Math.random()*10000,
+    id: parseInt(Math.random()*10000),
     name: body.name,
     number: body.number
   }
