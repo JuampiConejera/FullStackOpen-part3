@@ -1,6 +1,10 @@
 const express = require('express')
 const app = express()
 
+const morgan = require('morgan')
+
+morgan('tiny')
+
 let persons = [
     { 
       "id": 1,
