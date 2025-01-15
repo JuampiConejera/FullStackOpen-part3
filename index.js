@@ -32,6 +32,11 @@ let persons = [
       "id": 4,
       "name": "Mary Poppendieck", 
       "number": "39-23-6423122"
+    },
+    { 
+      "id": 5,
+      "name": "fran chupajapi", 
+      "number": "telacomo123"
     }
   ]
   
@@ -94,6 +99,6 @@ morgan.token('POST', (request, response) => {
   return console.log(request)
 })
 
-const PORT = 3000
+const PORT = process.env.PORT || 3000
 app.listen(PORT)
 console.log(`server running on port ${PORT}`)
