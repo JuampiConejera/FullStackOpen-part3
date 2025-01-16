@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-if (process.argv.length<3) {
+if (process.argv.length < 3) {
   console.log('give password as argument')
   process.exit(1)
 }
@@ -8,35 +8,32 @@ if (process.argv.length<3) {
 const password = process.argv[2]
 
 const url =
-  `mongodb+srv://juampiconejera:${password}@cluster0.q047y.mongodb.net/phoneBookApp?retryWrites=true&w=majority&appName=Cluster0`
+  `mongodb+srv://fullstack:${password}@cluster0.o1opl.mongodb.net/noteApp?retryWrites=true&w=majority`
 
-mongoose.set('strictQuery',false)
-
-mongoose.connect(url)
-
-const PhonebookSchema = new mongoose.Schema({
-  name: String,
-  number: String,
+mongoose.set('strictQuery', false)
+mongoose.connect(url).then(() => {
+  const personSchema = new mongoose.Schema({
+    name: String,
+    number: String,
+  })
+  
+  const Person = mongoose.model('Person', personSchema)
+  
+  const person = new Person({
+    name: 'HTML is x',
+    number: 'easy',
+  })
+  
+  /*
+  note.save().then(result => {
+    console.log('note saved!')
+    mongoose.connection.close()
+  })
+  */
+  Person.find({}).then(result => {
+    result.forEach(note => {
+      console.log(note)
+    })
+    mongoose.connection.close()
+  })
 })
-
-const Phonebook = mongoose.model('Phonebook', PhonebookSchema)
-
-if (!process.argv[3]) {
-    Phonebook.find({}).then(result => {
-        result.forEach(note => {
-            console.log(note)
-        })
-        mongoose.connection.close()
-    })
-} else {
-    const phonebook = new Phonebook({
-      name: `${process.argv[3]}`,
-      number: `${process.argv[4]}`,
-    })
-    
-    phonebook.save().then(() => {
-      console.log(`added ${process.argv[3]} number ${process.argv[4]} to Phonebook`)
-      mongoose.connection.close()
-    })
-}
-
