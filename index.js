@@ -5,7 +5,7 @@ require('dotenv').config()
 const Person = require('./models/person')
 
 
-let notes = [
+let persons = [
 ]
 
 app.use(express.static('dist'))
@@ -34,8 +34,8 @@ app.get('/info', (request, response) => {
 })
 
 app.get('/api/persons', (request, response) => {
-  Person.find({}).then(notes => {
-    response.json(notes)
+  Person.find({}).then(persons => {
+    response.json(persons)
   })
 })
 
@@ -59,19 +59,18 @@ app.post('/api/persons', (request, response) => {
   }
 })
 
-app.get('/api/notes/:id', (request, response) => {
-  Note.findById(request.params.id).then(note => {
-    response.json(note)
+app.get('/api/persons/:id', (request, response) => {
+  Person.findById(request.params.id).then(person => {
+    response.json(person)
   })
 })
 
-app.delete('/api/notes/:id', (request, response) => {
-  const id = Number(request.params.id)
-  notes = notes.filter(note => note.id !== id)
-
-  response.status(204).end()
+app.delete('/api/persons/:id', (request, response, next) => {
+  Person.findByIdAndDelete(request.params.id)
+  .then(result => {
+    response.status(204).end()
+  })
 })
-
 
 app.use(unknownEndpoint)
 
