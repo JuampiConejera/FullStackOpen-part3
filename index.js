@@ -34,7 +34,7 @@ app.get('/api/persons', (request, response, next) => {
   .then(persons => {
     response.json(persons)
   })
-  .catch((error) => next(error))
+  .catch(error => next(error))
 })
 
 app.post('/api/persons', (request, response, next) => {
@@ -54,7 +54,7 @@ app.post('/api/persons', (request, response, next) => {
     .then(savedPerson => {
       response.json(savedPerson)
     })
-    .catch((error) => next(error))
+    .catch(error => next(error))
   }
 })
 
@@ -63,7 +63,22 @@ app.get('/api/persons/:id', (request, response, next) => {
   .then(person => {
     response.json(person)
   })
-  .catch((error) => next(error))
+  .catch(error => next(error))
+})
+
+app.put('/api/persons/:id', (request, response, next) => {
+  const body = request.body
+
+  const note = {
+    name: body.name,
+    number: body.number,
+  }
+
+  Person.findByIdAndUpdate(request.params.id, note, { new: true })
+    .then(updatedPerson => {
+      response.json(updatedPerson)
+    })
+    .catch(error => next(error))
 })
 
 app.delete('/api/persons/:id', (request, response, next) => {
@@ -71,7 +86,7 @@ app.delete('/api/persons/:id', (request, response, next) => {
   .then(result => {
     response.status(204).end()
   })
-  .catch((error) => next(error))
+  .catch(error => next(error))
 })
 
 const errorHandler = (error, request, response, next) => {
