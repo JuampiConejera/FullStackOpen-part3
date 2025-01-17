@@ -18,21 +18,10 @@ mongoose.connect(url).then(() => {
   })
   
   const Person = mongoose.model('Person', personSchema)
-  
-  const person = new Person({
-    name: 'HTML is x',
-    number: 'easy',
-  })
-  
-  /*
-  note.save().then(result => {
-    console.log('note saved!')
-    mongoose.connection.close()
-  })
-  */
+
   Person.find({}).then(result => {
-    result.forEach(note => {
-      console.log(note)
+    result.forEach(person => {
+      console.log(person)
     })
     mongoose.connection.close()
   })

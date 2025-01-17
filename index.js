@@ -4,10 +4,6 @@ require('dotenv').config()
 
 const Person = require('./models/person')
 
-
-let persons = [
-]
-
 app.use(express.static('dist'))
 
 const cors = require('cors')
@@ -25,14 +21,14 @@ const unknownEndpoint = (request, response) => {
   response.status(404).send({ error: 'unknown endpoint' })
 }
 
-app.get('/info', (request, response) => {
+/* app.get('/info', (request, response) => {
   response.send(
-    `<p>Phonebook has info for ${persons.length} people</p>
+    `<p>Phonebook has info for ${Person.length} people</p>
     <p>${new Date().toISOString()}</p>
     `
   )
 })
-
+ */
 app.get('/api/persons', (request, response) => {
   Person.find({}).then(persons => {
     response.json(persons)
