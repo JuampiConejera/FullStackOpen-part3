@@ -71,17 +71,17 @@ app.get('/api/persons/:id', (request, response, next) => {
 
 app.put('/api/persons/:id', (request, response, next) => {
   const body = request.body
-
-  const note = {
-    name: body.name,
-    number: body.number,
+  if (body.number) {
+    const note = {
+      name: body.name,
+      number: body.number,
+    }
+    Person.findByIdAndUpdate(request.params.id, note, { new: true, runValidators: true, context: 'query' })
+      .then(updatedPerson => {
+        response.json(updatedPerson)
+      })
+      .catch(error => next(error))
   }
-
-  Person.findByIdAndUpdate(request.params.id, note, { new: true })
-    .then(updatedPerson => {
-      response.json(updatedPerson)
-    })
-    .catch(error => next(error))
 })
 
 app.delete('/api/persons/:id', (request, response, next) => {
