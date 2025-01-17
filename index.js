@@ -21,14 +21,17 @@ const unknownEndpoint = (request, response) => {
   response.status(404).send({ error: 'unknown endpoint' })
 }
 
-/* app.get('/info', (request, response) => {
-  response.send(
-    `<p>Phonebook has info for ${Person.length} people</p>
-    <p>${new Date().toISOString()}</p>
-    `
-  )
+app.get('/info', (request, response, next) => {
+  Person.countDocuments({})
+    .then(count => {
+      response.send(
+        `<p>Phonebook has info for ${count} people</p>
+        <p>${new Date().toISOString()}</p>`
+      )
+    })
+    .catch(error => next(error))
 })
- */
+
 app.get('/api/persons', (request, response, next) => {
   Person.find({})
   .then(persons => {
