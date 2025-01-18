@@ -86,7 +86,7 @@ app.put('/api/persons/:id', (request, response, next) => {
 
 app.delete('/api/persons/:id', (request, response, next) => {
   Person.findByIdAndDelete(request.params.id)
-  .then(result => {
+  .then(() => {
     response.status(204).end()
   })
   .catch(error => next(error))
@@ -105,7 +105,7 @@ const errorHandler = (error, request, response, next) => {
 app.use(errorHandler)
 app.use(unknownEndpoint)
 
-morgan.token('POST', (request, response) => {
+morgan.token('POST', (request) => {
   return console.log(request)
 })
 const PORT = process.env.PORT
